@@ -15,7 +15,10 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
     "@types/uuid": "^9.0.8",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5"
   }

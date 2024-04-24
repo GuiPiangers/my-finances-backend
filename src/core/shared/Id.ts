@@ -3,6 +3,10 @@ import { ApiError } from "../../utils/ApiError";
 
 export class Id {
   constructor(readonly value: string = uuidV4()) {
-    if (!validate(value)) throw new ApiError("Id inválido", 400, 'id');
+    if (!validate(value))
+      throw new ApiError("Id inválido", {
+        statusCode: 400,
+        title: "id",
+      });
   }
 }
