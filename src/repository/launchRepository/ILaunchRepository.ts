@@ -5,7 +5,7 @@ export type UpdateLaunch = Partial<LaunchDTO> & {
   id: string;
   userId: string;
 };
-export type deleteLaunch = {
+export type DeleteLaunch = {
   id: string;
   userId: string;
 };
@@ -20,7 +20,7 @@ export type ListLaunch = {
 export interface ILaunchRepository {
   create(data: CreateLaunch): Promise<void>;
   update(data: UpdateLaunch): Promise<void>;
-  delete(data: deleteLaunch): Promise<void>;
-  list(data: ListLaunch): Promise<LaunchDTO[]>;
+  delete(data: DeleteLaunch): Promise<void>;
+  list(): Promise<LaunchDTO[]>;
   getById(data: GetByIdLaunch): Promise<LaunchDTO | undefined>;
 }

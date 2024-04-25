@@ -3,16 +3,15 @@ import {
   CreateLaunch,
   GetByIdLaunch,
   ILaunchRepository,
-  ListLaunch,
   UpdateLaunch,
-  deleteLaunch,
+  DeleteLaunch,
 } from "./ILaunchRepository";
 
 export class InMemoryLaunchRepository implements ILaunchRepository {
   private _launchData: LaunchDTO[] = [];
 
   async create(data: CreateLaunch) {
-    this._launchData.push(data);
+    this._launchData = [...this._launchData, data];
   }
 
   async update(data: UpdateLaunch) {
@@ -23,14 +22,14 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
     });
   }
 
-  async delete({ id, userId }: deleteLaunch) {
+  async delete({ id, userId }: DeleteLaunch) {
     this._launchData = this._launchData.filter((launch) => {
       return userId === launch.id && launch.id !== id;
     });
   }
 
-  async list({ userId }: ListLaunch) {
-    return this._launchData.filter((launch) => launch.userId === userId);
+  async list() {
+    return this._launchData;
   }
 
   async getById({ id, userId }: GetByIdLaunch) {

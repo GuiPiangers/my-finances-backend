@@ -1,3 +1,4 @@
+import { DateTime } from "../../shared/Date";
 import { Entity } from "../../shared/Entity";
 
 export interface LaunchDTO {
@@ -12,7 +13,7 @@ export interface LaunchDTO {
 
 export class Launch extends Entity {
   readonly userId: string;
-  readonly date: string;
+  readonly date: DateTime;
   readonly description: string;
   readonly type: string;
   readonly status: string;
@@ -29,7 +30,7 @@ export class Launch extends Entity {
   }: LaunchDTO) {
     super(id);
     this.userId = userId;
-    this.date = date;
+    this.date = new DateTime(date);
     this.description = description;
     this.status = status;
     this.type = type;
