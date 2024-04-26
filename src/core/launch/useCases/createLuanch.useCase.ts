@@ -16,6 +16,7 @@ export class CreateLaunchUseCase {
       type,
       userId,
       value,
+      id,
     } = new Launch(params);
 
     const launchData = await this._LaunchRepository.create({
@@ -26,6 +27,7 @@ export class CreateLaunchUseCase {
       userId,
       category,
       value,
+      id,
     });
 
     return launchData;

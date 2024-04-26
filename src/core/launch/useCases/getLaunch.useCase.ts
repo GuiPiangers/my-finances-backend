@@ -3,7 +3,7 @@ import {
   ILaunchRepository,
 } from "../../../repository/launchRepository/ILaunchRepository";
 
-export class getLaunchesUseCase {
+export class GetLaunchUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}
 
   async execute({ userId, id }: GetByIdLaunch) {
