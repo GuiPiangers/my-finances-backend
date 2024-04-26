@@ -7,19 +7,33 @@ import {
   DeleteLaunch,
 } from "./ILaunchRepository";
 
+const launchDataDB: LaunchDTO[] = [];
+
 export class InMemoryLaunchRepository implements ILaunchRepository {
-  private _launchData: LaunchDTO[] = [];
+  private _launchData: LaunchDTO[] = [
+    {
+      date: "10",
+      status: "payable",
+      userId: "",
+      description: "",
+      type: "revenue",
+    },
+  ];
 
   async create(data: CreateLaunch) {
-    this._launchData = [...this._launchData, data];
+    this._launchData.push(data);
+    launchDataDB.push(data);
+    return data;
   }
 
   async update(data: UpdateLaunch) {
     this._launchData = this._launchData.map((launch) => {
       if (launch.id === data.id && launch.userId === data.userId)
         return data as LaunchDTO;
-      return launch as LaunchDTO;
+      return data as LaunchDTO;
     });
+
+    return data as LaunchDTO;
   }
 
   async delete({ id, userId }: DeleteLaunch) {
@@ -29,7 +43,7 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
   }
 
   async list() {
-    return this._launchData;
+    return launchDataDB;
   }
 
   async getById({ id, userId }: GetByIdLaunch) {

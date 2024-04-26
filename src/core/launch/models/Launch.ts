@@ -9,15 +9,17 @@ export interface LaunchDTO {
   type: "revenue" | "expenditure";
   status: "payed" | "payable";
   category?: string;
+  value: number;
 }
 
 export class Launch extends Entity {
   readonly userId: string;
   readonly date: DateTime;
   readonly description: string;
-  readonly type: string;
-  readonly status: string;
+  readonly type: "revenue" | "expenditure";
+  readonly status: "payed" | "payable";
   readonly category: string | undefined;
+  readonly value: number;
 
   constructor({
     id,
@@ -27,6 +29,7 @@ export class Launch extends Entity {
     type,
     userId,
     category,
+    value,
   }: LaunchDTO) {
     super(id);
     this.userId = userId;
@@ -35,5 +38,6 @@ export class Launch extends Entity {
     this.status = status;
     this.type = type;
     this.category = category;
+    this.value = value;
   }
 }

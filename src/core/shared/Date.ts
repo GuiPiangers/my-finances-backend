@@ -12,32 +12,45 @@ export class DateTime {
     value: string,
     { onlyPassDate, onlyFutureDate }: DateTimeConfig = {},
   ) {
-    if (!this._isValidDate(value))
+    const valueDate = this._isLocaleDate(value)
+      ? this._localeDateToISO(value)
+      : value;
+    if (!this._isValidDate(valueDate))
       throw new ApiError("A data informada não é válida", {
         title: "date",
       });
 
     if (onlyPassDate && !onlyFutureDate) {
-      if (this._isPassDate(value))
+      if (this._isPassDate(valueDate))
         throw new ApiError(
           "A data informada precisa ser anterior a data atual",
           { title: "date" },
         );
     }
     if (onlyFutureDate && !onlyPassDate) {
-      if (this._isFutureDate(value))
+      if (this._isFutureDate(valueDate))
         throw new ApiError(
           "A data informada precisa ser posterior a data atual",
           { title: "date" },
         );
     }
 
-    this.value = new Date(value);
+    this.value = new Date(valueDate);
   }
 
-  private _isValidDate(dateString: string) {
-    const date = new Date(dateString);
-    return !isNaN(date.getTime());
+  private _isLocaleDate(value: string) {
+    const localePattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+    return localePattern.test(value);
+  }
+
+  private _localeDateToISO(value: string) {
+    const localePattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+    return value.replace(localePattern, "$3-$2-$1");
+  }
+
+  private _isValidDate(value: string) {
+    const date = new Date(value);
+    return !!date.getTime();
   }
 
   private _isPassDate(value: string) {
