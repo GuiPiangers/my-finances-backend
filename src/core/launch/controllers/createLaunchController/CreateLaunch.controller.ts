@@ -11,6 +11,7 @@ export class CreateLaunchController {
     try {
       const data = req.body as LaunchDTO;
       const res = await this._CreateLaunchUseCase.execute(data);
+      console.log(req.user);
       reply.send(res);
     } catch (err) {
       responseError(reply, err as ApiError);
