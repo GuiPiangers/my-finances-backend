@@ -1,7 +1,7 @@
 import {
   ILaunchRepository,
   DeleteLaunch,
-} from "../../../repository/launchRepository/ILaunchRepository";
+} from "../../../repository/launch/ILaunchRepository";
 
 export class DeleteLaunchUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}

@@ -1,7 +1,7 @@
 import {
   CreateLaunch,
   ILaunchRepository,
-} from "../../../repository/launchRepository/ILaunchRepository";
+} from "../../../repository/launch/ILaunchRepository";
 import { Launch } from "../models/Launch";
 
 export class CreateLaunchUseCase {

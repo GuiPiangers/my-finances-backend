@@ -1,7 +1,7 @@
 import {
   GetByIdLaunch,
   ILaunchRepository,
-} from "../../../repository/launchRepository/ILaunchRepository";
+} from "../../../repository/launch/ILaunchRepository";
 
 export class GetLaunchUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}

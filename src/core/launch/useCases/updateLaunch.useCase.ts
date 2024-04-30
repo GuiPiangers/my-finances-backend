@@ -1,7 +1,7 @@
 import {
   ILaunchRepository,
   UpdateLaunch,
-} from "../../../repository/launchRepository/ILaunchRepository";
+} from "../../../repository/launch/ILaunchRepository";
 
 export class UpdateLaunchUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}

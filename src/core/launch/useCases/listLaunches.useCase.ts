@@ -1,4 +1,4 @@
-import { ILaunchRepository } from "../../../repository/launchRepository/ILaunchRepository";
+import { ILaunchRepository } from "../../../repository/launch/ILaunchRepository";
 
 export class ListLaunchesUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}

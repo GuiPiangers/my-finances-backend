@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { InMemoryLaunchRepository } from "../../../../repository/launchRepository/InMemory.LaunchRepository";
+import { InMemoryLaunchRepository } from "../../../../repository/launch/InMemory.LaunchRepository";
 import { GetLaunchUseCase } from "../../useCases/getLaunch.useCase";
 import { GetLaunchController } from "./getLaunch.controller";
 
