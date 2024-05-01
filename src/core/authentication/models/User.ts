@@ -13,7 +13,7 @@ export interface UserDTO {
 
 export class User extends Entity {
   readonly name: string;
-  readonly password: Password;
+  private _password: Password;
   private _email: Email;
   private _phone: Phone;
 
@@ -22,7 +22,7 @@ export class User extends Entity {
     this.name = props.name;
     this._email = new Email(props.email);
     this._phone = new Phone(props.phone);
-    this.password = new Password(props.password);
+    this._password = new Password(props.password);
   }
 
   get email() {
@@ -33,11 +33,15 @@ export class User extends Entity {
     return this._phone.value;
   }
 
-  async getUserDTO(): Promise<UserDTO> {
+  async getPasswordHash() {
+    return await this._password.getHash();
+  }
+
+  async getDTO(): Promise<UserDTO> {
     return {
       id: this.id,
       email: this.email,
-      password: await this.password.getHash(),
+      password: await this.getPasswordHash(),
       name: this.name,
       phone: this.phone,
     };

@@ -8,28 +8,9 @@ export class CreateLaunchUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}
 
   async execute(params: CreateLaunch) {
-    const {
-      category,
-      date: { ISODate },
-      description,
-      status,
-      type,
-      userId,
-      value,
-      id,
-    } = new Launch(params);
+    const launch = new Launch(params);
+    launch.update({ value: 1000, type: "revenue" });
 
-    const launchData = await this._LaunchRepository.create({
-      date: ISODate,
-      description,
-      status,
-      type,
-      userId,
-      category,
-      value,
-      id,
-    });
-
-    return launchData;
+    await this._LaunchRepository.create(launch.getDTO());
   }
 }

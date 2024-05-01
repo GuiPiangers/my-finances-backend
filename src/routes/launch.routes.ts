@@ -4,16 +4,10 @@ import { handleListLaunches } from "../core/launch/controllers/listLauncControll
 import { handleGetLaunch } from "../core/launch/controllers/getLaunchController";
 import { handleDeleteLaunch } from "../core/launch/controllers/deleteLaunchController";
 import { handleUpdateLaunch } from "../core/launch/controllers/updateLaunchController";
-import { authentication } from "../server";
+// import { authentication } from "../server";
 
 export async function launchRoutes(fastify: FastifyInstance) {
-  fastify.post(
-    "/",
-    {
-      preHandler: authentication,
-    },
-    handleCreateLaunch,
-  );
+  fastify.post("/", handleCreateLaunch);
   fastify.delete("/", handleDeleteLaunch);
   fastify.get("/", handleListLaunches);
   fastify.get("/:id/:userId", handleGetLaunch);

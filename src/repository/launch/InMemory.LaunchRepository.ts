@@ -1,4 +1,5 @@
-import { LaunchDTO } from "../../core/launch/models/Launch";
+import { Launch, LaunchDTO } from "../../core/launch/models/Launch";
+import { ApiError } from "../../utils/ApiError";
 import {
   CreateLaunch,
   GetByIdLaunch,
@@ -12,7 +13,6 @@ let launchDataDB: LaunchDTO[] = [];
 export class InMemoryLaunchRepository implements ILaunchRepository {
   async create(data: CreateLaunch) {
     launchDataDB.push(data);
-    return data;
   }
 
   async update(data: UpdateLaunch) {
@@ -21,8 +21,6 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
         return Object.assign(launch, data);
       return launch as LaunchDTO;
     });
-
-    return this.getById({ id: data.id, userId: data.userId });
   }
 
   async delete({ id, userId }: DeleteLaunch) {
@@ -32,12 +30,16 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
   }
 
   async list() {
-    return launchDataDB;
+    return launchDataDB.map((launch) => new Launch(launch));
   }
 
   async getById({ id, userId }: GetByIdLaunch) {
-    return launchDataDB.find(
+    const launch = launchDataDB.find(
       (launch) => launch.id === id && launch.userId === userId,
     );
+    if (!launch)
+      throw new ApiError("Lançamento não encontrado", { statusCode: 400 });
+
+    return new Launch(launch);
   }
 }

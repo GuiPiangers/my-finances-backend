@@ -1,4 +1,4 @@
-import { LaunchDTO } from "../../core/launch/models/Launch";
+import { Launch, LaunchDTO } from "../../core/launch/models/Launch";
 
 export type CreateLaunch = LaunchDTO;
 export type UpdateLaunch = Partial<LaunchDTO> & {
@@ -18,9 +18,9 @@ export type ListLaunch = {
 };
 
 export interface ILaunchRepository {
-  create(data: CreateLaunch): Promise<LaunchDTO | undefined>;
-  update(data: UpdateLaunch): Promise<LaunchDTO | undefined>;
+  create(data: CreateLaunch): Promise<void>;
+  update(data: UpdateLaunch): Promise<void>;
   delete(data: DeleteLaunch): Promise<void>;
-  list(): Promise<LaunchDTO[]>;
-  getById(data: GetByIdLaunch): Promise<LaunchDTO | undefined>;
+  list(): Promise<Launch[]>;
+  getById(data: GetByIdLaunch): Promise<Launch>;
 }

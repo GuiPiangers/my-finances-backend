@@ -4,10 +4,10 @@ export class ApiError extends Error {
 
   constructor(
     message: string,
-    { statusCode, title }: { statusCode?: number; title?: string },
+    config?: { statusCode?: number; title?: string },
   ) {
     super(message);
-    this.statusCode = statusCode || 400;
-    this.type = title;
+    this.statusCode = config?.statusCode || 400;
+    this.type = config?.title;
   }
 }

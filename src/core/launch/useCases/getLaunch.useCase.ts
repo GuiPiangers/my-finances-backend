@@ -9,6 +9,6 @@ export class GetLaunchUseCase {
   async execute({ userId, id }: GetByIdLaunch) {
     const launches = await this._LaunchRepository.getById({ userId, id });
 
-    return launches;
+    return launches.getDTO();
   }
 }

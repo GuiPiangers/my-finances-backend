@@ -6,6 +6,6 @@ export class ListLaunchesUseCase {
   async execute() {
     const launches = await this._LaunchRepository.list();
 
-    return launches;
+    return launches.map((launch) => launch.getDTO());
   }
 }
