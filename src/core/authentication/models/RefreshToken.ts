@@ -1,9 +1,10 @@
+import dayjs from "dayjs";
 import { Entity } from "../../shared/Entity";
 
 export interface RefreshTokenDTO {
   id?: string;
   userId: string;
-  expiresIn: number;
+  expiresIn?: number;
 }
 
 export class RefreshToken extends Entity {
@@ -13,6 +14,6 @@ export class RefreshToken extends Entity {
   constructor(props: RefreshTokenDTO) {
     super(props.id);
     this.userId = props.userId;
-    this.expiresIn = props.expiresIn;
+    this.expiresIn = props.expiresIn || dayjs().add(15, "days").unix();
   }
 }
