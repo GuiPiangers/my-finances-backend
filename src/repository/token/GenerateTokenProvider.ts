@@ -17,6 +17,4 @@ class GenerateTokenProvider implements IGenerateTokenProvider {
   }
 }
 
-const generateTokenProvider = new GenerateTokenProvider();
-
-export { generateTokenProvider };
+export { GenerateTokenProvider };

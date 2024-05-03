@@ -12,6 +12,7 @@ export abstract class LoginUserUseCase {
   async execute(credentials: unknown) {
     const user = await this.validadeCredentials(credentials);
     const token = await this.generateTokenProvider.execute(user.id);
+    console.log(token);
     const refreshToken = new RefreshToken({ userId: user.id });
 
     await this.refreshTokenProvider.generate({

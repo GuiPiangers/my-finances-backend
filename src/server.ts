@@ -6,6 +6,7 @@ import fastify, {
 
 import { launchRoutes } from "./routes/launch.routes";
 import { OAuth2Client, TokenPayload } from "google-auth-library";
+import { authenticationRoutes } from "./routes/authentication.routes";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -47,6 +48,7 @@ export const authentication = async (
 const PORT = 3333;
 
 app.register(launchRoutes);
+app.register(authenticationRoutes);
 
 app.listen(
   {

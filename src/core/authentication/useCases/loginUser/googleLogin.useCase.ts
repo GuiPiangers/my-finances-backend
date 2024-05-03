@@ -19,7 +19,7 @@ export class GoogleLoginUseCase extends LoginUserUseCase {
     super(refreshTokenProvider, generateTokenProvider);
   }
 
-  async validadeCredentials({ token }: GoogleCredentials) {
+  protected async validadeCredentials({ token }: GoogleCredentials) {
     const client = new OAuth2Client();
     const ticket = await client.verifyIdToken({
       idToken: token,
@@ -29,7 +29,7 @@ export class GoogleLoginUseCase extends LoginUserUseCase {
 
     const user = await this.userRepository.getByEmail(email!);
 
-    if (!user || !user.id) {
+    if (!user) {
       const newUser = new User({ email: email!, name: name! });
       this.userRepository.save(await newUser.getDTO());
       return newUser;
