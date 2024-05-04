@@ -2,18 +2,18 @@
 import { RefreshTokenDTO } from "../../core/authentication/models/RefreshToken";
 import { IRefreshTokenProvider } from "./IRefreshTokenProvider";
 
-const refreshTokens: RefreshTokenDTO[] = [];
+let refreshTokens: RefreshTokenDTO[] = [];
 
 class InMemoryRefreshToken implements IRefreshTokenProvider {
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented." + id);
+  async delete(userId: string): Promise<void> {
+    refreshTokens = refreshTokens.filter((token) => token.userId !== userId);
   }
 
-  async generate(refreshToken: RefreshTokenDTO): Promise<void> {
+  async create(refreshToken: RefreshTokenDTO): Promise<void> {
     refreshTokens.push(refreshToken);
   }
 
-  async getRefreshToken(id: string): Promise<RefreshTokenDTO | undefined> {
+  async get(id: string): Promise<RefreshTokenDTO | undefined> {
     const refToken = refreshTokens.find(
       (refreshToken) => refreshToken.id === id,
     );

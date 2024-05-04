@@ -17,7 +17,7 @@ const app: FastifyInstance = fastify({ logger: false });
 const PORT = 3333;
 
 app.register(launchRoutes, { prefix: "launch" });
-app.register(authenticationRoutes, { prefix: "login" });
+app.register(authenticationRoutes);
 
 app.listen(
   {

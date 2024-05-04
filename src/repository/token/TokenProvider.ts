@@ -4,6 +4,8 @@ import * as dotenv from "dotenv";
 import { ApiError } from "../../utils/ApiError";
 dotenv.config();
 
+const invalidTokens: string[] = [];
+
 class TokenProvider implements ITokenProvider {
   async create(userId: string) {
     if (!process.env.JWT_SECRET)
@@ -17,7 +19,16 @@ class TokenProvider implements ITokenProvider {
   }
 
   async verify(token: string): Promise<JwtPayload> {
+    const isInvalidToken = invalidTokens.find(
+      (invalidToken) => token === invalidToken,
+    );
+    if (isInvalidToken)
+      throw new ApiError("Invalid token", { statusCode: 401 });
     return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
+  }
+
+  async invalidToken(token: string) {
+    await invalidTokens.push(token);
   }
 }
 

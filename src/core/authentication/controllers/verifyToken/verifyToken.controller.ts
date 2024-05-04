@@ -8,7 +8,7 @@ export class VerifyTokenController {
 
   async handle(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const token = req.headers.authorization?.replace(/^Barrer /, "");
+      const token = req.headers.authorization?.replace(/^Bearer /, "");
       if (!token)
         throw new ApiError("Acesso não autorizado", { statusCode: 401 });
       const payload = await this._verifyTokenUseCase.execute(token);

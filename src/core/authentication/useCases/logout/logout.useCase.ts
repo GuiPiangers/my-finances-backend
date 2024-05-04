@@ -3,7 +3,7 @@ import { IRefreshTokenProvider } from "../../../../repository/token/IRefreshToke
 export class LogoutUseCase {
   constructor(private refreshTokenProvider: IRefreshTokenProvider) {}
 
-  async execute(refreshTokenId: string) {
-    await this.refreshTokenProvider.delete(refreshTokenId);
+  async execute(userId: string) {
+    await this.refreshTokenProvider.delete(userId);
   }
 }

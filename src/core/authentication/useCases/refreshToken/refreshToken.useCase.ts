@@ -8,30 +8,30 @@ import { ApiError } from "../../../../utils/ApiError";
 export class RefreshTokenUseCase {
   constructor(
     private refreshTokenProvider: IRefreshTokenProvider,
-    private generateTokenProvider: ITokenProvider,
+    private tokenProvider: ITokenProvider,
   ) {}
 
-  async execute(refreshTokenId: string) {
-    const refreshToken =
-      await this.refreshTokenProvider.getRefreshToken(refreshTokenId);
-    if (!refreshToken)
+  async execute({
+    refreshTokenId,
+    userId,
+  }: {
+    refreshTokenId: string;
+    userId: string;
+  }) {
+    const refreshToken = await this.refreshTokenProvider.get(refreshTokenId);
+    if (!refreshToken) {
+      this.refreshTokenProvider.delete(userId);
       throw new ApiError("Refresh Token inválido", { statusCode: 401 });
-    const token = await this.generateTokenProvider.create(refreshToken.userId);
-    const refreshTokenExpired = dayjs().isAfter(
-      dayjs.unix(refreshToken.expiresIn!),
-    );
-
-    if (refreshTokenExpired) {
-      const { id: _, ...refreshTokenData } = refreshToken;
-      const { id, expiresIn, userId } = new RefreshToken(refreshTokenData);
-      const newRefreshToken = await this.refreshTokenProvider.generate({
-        id,
-        expiresIn,
-        userId,
-      });
-      return { token, newRefreshToken };
     }
+    const token = await this.tokenProvider.create(refreshToken.userId);
 
-    return { token };
+    const { id: _, ...refreshTokenData } = refreshToken;
+    const { id, expiresIn } = new RefreshToken(refreshTokenData);
+    await this.refreshTokenProvider.create({
+      id,
+      expiresIn,
+      userId,
+    });
+    return { token, RefreshToken: { userId, id, expiresIn } };
   }
 }

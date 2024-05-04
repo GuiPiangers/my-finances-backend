@@ -15,7 +15,7 @@ export abstract class LoginUserTemplate {
     console.log(token);
     const refreshToken = new RefreshToken({ userId: user.id });
 
-    await this.refreshTokenProvider.generate({
+    await this.refreshTokenProvider.create({
       expiresIn: refreshToken.expiresIn,
       userId: refreshToken.userId,
       id: refreshToken.id,
@@ -25,6 +25,7 @@ export abstract class LoginUserTemplate {
       token,
       refreshToken: refreshToken.id,
       user: {
+        id: user.id,
         email: user.email,
         name: user.name,
         phone: user.phone,
