@@ -1,8 +1,8 @@
 import { FastifyRequest } from "fastify/types/request";
-import { ApiError } from "../../../utils/ApiError";
-import { responseError } from "../../../utils/ResponseError";
+import { ApiError } from "../../../../utils/ApiError";
+import { responseError } from "../../../../utils/ResponseError";
 import { FastifyReply } from "fastify";
-import { GoogleLoginUseCase } from "../useCases/loginUser/googleLogin.useCase";
+import { GoogleLoginUseCase } from "../../useCases/loginUser/googleLogin.useCase";
 
 export class GoogleLoginController {
   constructor(private _GoogleLoginUseCase: GoogleLoginUseCase) {}

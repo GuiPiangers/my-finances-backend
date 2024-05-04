@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { handleGoogleLogin } from "../core/authentication/controllers";
+import { handleGoogleLogin } from "../core/authentication/controllers/login";
 
 export async function authenticationRoutes(fastify: FastifyInstance) {
-  fastify.post("/login", handleGoogleLogin);
+  fastify.post("/google", handleGoogleLogin);
 }

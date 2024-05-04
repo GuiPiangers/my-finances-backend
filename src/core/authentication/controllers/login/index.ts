@@ -1,13 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { GenerateTokenProvider } from "../../../repository/token/GenerateTokenProvider";
-import { RefreshTokenProvider } from "../../../repository/token/RefreshTokenProvider";
-import { InMemoryUserRepository } from "../../../repository/user/inMemoryUserRepository";
-import { GoogleLoginUseCase } from "../useCases/loginUser/googleLogin.useCase";
+import { TokenProvider } from "../../../../repository/token/TokenProvider";
+import { InMemoryRefreshToken } from "../../../../repository/token/RefreshTokenProvider";
+import { InMemoryUserRepository } from "../../../../repository/user/inMemoryUserRepository";
+import { GoogleLoginUseCase } from "../../useCases/loginUser/googleLogin.useCase";
 import { GoogleLoginController } from "./googleLogin.controller";
 
 export const handleGoogleLogin = (req: FastifyRequest, reply: FastifyReply) => {
-  const tokenProvider = new GenerateTokenProvider();
-  const refreshTokenProvider = new RefreshTokenProvider();
+  const tokenProvider = new TokenProvider();
+  const refreshTokenProvider = new InMemoryRefreshToken();
   const userRepository = new InMemoryUserRepository();
 
   const googleLoginUseCase = new GoogleLoginUseCase(

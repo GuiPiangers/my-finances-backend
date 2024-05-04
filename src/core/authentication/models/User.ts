@@ -9,11 +9,13 @@ export interface UserDTO {
   email: string;
   phone?: string;
   password?: string;
+  emailVerified?: boolean;
 }
 
 export class User extends Entity {
   readonly name: string;
   readonly password?: Password;
+  readonly emailVerified: boolean;
   private _email: Email;
   private _phone?: Phone;
 
@@ -21,6 +23,7 @@ export class User extends Entity {
     super(props.id);
     this.name = props.name;
     this._email = new Email(props.email);
+    this.emailVerified = props.emailVerified || false;
     if (props.phone) this._phone = new Phone(props.phone);
     if (props.password) this.password = new Password(props.password);
   }
@@ -40,6 +43,7 @@ export class User extends Entity {
       password: await this.password?.getHash(),
       name: this.name,
       phone: this.phone,
+      emailVerified: this.emailVerified,
     };
   }
 }

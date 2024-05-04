@@ -1,17 +1,17 @@
-import { IGenerateTokenProvider } from "../../../../repository/token/IGenerateTokenProvider";
+import { ITokenProvider } from "../../../../repository/token/ITokenProvider";
 import { IRefreshTokenProvider } from "../../../../repository/token/IRefreshTokenProvider";
 import { RefreshToken } from "../../models/RefreshToken";
 import { User } from "../../models/User";
 
-export abstract class LoginUserUseCase {
+export abstract class LoginUserTemplate {
   constructor(
     private refreshTokenProvider: IRefreshTokenProvider,
-    private generateTokenProvider: IGenerateTokenProvider,
+    private generateTokenProvider: ITokenProvider,
   ) {}
 
   async execute(credentials: unknown) {
     const user = await this.validadeCredentials(credentials);
-    const token = await this.generateTokenProvider.execute(user.id);
+    const token = await this.generateTokenProvider.create(user.id);
     console.log(token);
     const refreshToken = new RefreshToken({ userId: user.id });
 
@@ -27,6 +27,7 @@ export abstract class LoginUserUseCase {
       user: {
         email: user.email,
         name: user.name,
+        phone: user.phone,
       },
     };
   }

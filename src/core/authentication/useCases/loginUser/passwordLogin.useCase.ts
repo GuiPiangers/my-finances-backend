@@ -1,26 +1,26 @@
 import { IRefreshTokenProvider } from "../../../../repository/token/IRefreshTokenProvider";
-import { IGenerateTokenProvider } from "../../../../repository/token/IGenerateTokenProvider";
+import { ITokenProvider } from "../../../../repository/token/ITokenProvider";
 import { IUserRepository } from "../../../../repository/user/IUserRepository";
 import { Crypto } from "../../../shared/helpers/Crypto";
 import { ApiError } from "../../../../utils/ApiError";
-import { LoginUserUseCase } from "./loginUser.useCase";
+import { LoginUserTemplate } from "./loginUser.useCase";
 
 type PasswordCredentials = {
   email: string;
   password: string;
 };
 
-export class PasswordLoginUseCase extends LoginUserUseCase {
+export class PasswordLoginUseCase extends LoginUserTemplate {
   constructor(
-    private userRepository: IUserRepository,
+    private _userRepository: IUserRepository,
     refreshTokenProvider: IRefreshTokenProvider,
-    generateTokenProvider: IGenerateTokenProvider,
+    tokenProvider: ITokenProvider,
   ) {
-    super(refreshTokenProvider, generateTokenProvider);
+    super(refreshTokenProvider, tokenProvider);
   }
 
   async validadeCredentials({ email, password }: PasswordCredentials) {
-    const user = await this.userRepository.getByEmail(email);
+    const user = await this._userRepository.getByEmail(email);
     if (!user || !user.id) throw new ApiError("Email ou senha inválidos");
     if (!user.password)
       throw new ApiError("Usuário foi registrado com outro provedor");

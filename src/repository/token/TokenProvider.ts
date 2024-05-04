@@ -1,11 +1,11 @@
-import { IGenerateTokenProvider } from "./IGenerateTokenProvider";
+import { ITokenProvider, JwtPayload } from "./ITokenProvider";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { ApiError } from "../../utils/ApiError";
 dotenv.config();
 
-class GenerateTokenProvider implements IGenerateTokenProvider {
-  async execute(userId: string) {
+class TokenProvider implements ITokenProvider {
+  async create(userId: string) {
     if (!process.env.JWT_SECRET)
       throw new ApiError("Erro de configuração do servidor", {
         statusCode: 500,
@@ -15,6 +15,10 @@ class GenerateTokenProvider implements IGenerateTokenProvider {
     });
     return token;
   }
+
+  async verify(token: string): Promise<JwtPayload> {
+    return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
+  }
 }
 
-export { GenerateTokenProvider };
+export { TokenProvider };
