@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { responseError } from "../../../../utils/ResponseError";
-import { CreateLaunchUseCase } from "../../useCases/createLuanch.useCase";
+import { CreateLaunchUseCase } from "../../useCases/createLaunch.useCase";
 import { ApiError } from "../../../../utils/ApiError";
 import { LaunchDTO } from "../../models/Launch";
 

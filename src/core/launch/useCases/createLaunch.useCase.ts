@@ -9,7 +9,6 @@ export class CreateLaunchUseCase {
 
   async execute(params: CreateLaunch) {
     const launch = new Launch(params);
-    launch.update({ value: 1000, type: "revenue" });
 
     await this._LaunchRepository.create(launch.getDTO());
   }
