@@ -10,7 +10,10 @@ export class UpdateLaunchController {
   async handle(req: FastifyRequest, reply: FastifyReply) {
     try {
       const data = req.body as LaunchDTO;
-      const { id, userId } = req.params as { id: string; userId: string };
+      const { id } = req.params as { id: string };
+      const userId = req.user?.userId;
+      if (!userId) throw new ApiError("UserId is required");
+
       const res = await this._updateLaunchUseCase.execute({
         ...data,
         id,

@@ -9,9 +9,12 @@ export class CreateLaunchController {
 
   async handle(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const data = req.body as LaunchDTO;
-      const res = await this._CreateLaunchUseCase.execute(data);
-      console.log(req.user);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { userId: _, ...data } = req.body as LaunchDTO;
+      const userId = req.user?.userId;
+      if (!userId) throw new ApiError("UserId is required");
+
+      const res = await this._CreateLaunchUseCase.execute({ userId, ...data });
       reply.send(res);
     } catch (err) {
       responseError(reply, err as ApiError);

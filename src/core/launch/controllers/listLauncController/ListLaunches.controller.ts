@@ -8,8 +8,9 @@ export class ListLaunchesController {
 
   async handle(req: FastifyRequest, reply: FastifyReply) {
     try {
-      // const { userId } = req.body as ListLaunch;
-      const res = await this._ListLaunchUseCase.execute();
+      const userId = req.user?.userId;
+      if (!userId) throw new ApiError("UserId is required");
+      const res = await this._ListLaunchUseCase.execute({ userId });
       reply.send(res);
     } catch (err) {
       responseError(reply, err as ApiError);

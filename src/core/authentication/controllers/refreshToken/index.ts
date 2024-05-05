@@ -3,6 +3,7 @@ import { InMemoryRefreshToken } from "../../../../repository/token/RefreshTokenP
 import { RefreshTokenUseCase } from "../../useCases/refreshToken/refreshToken.useCase";
 import { TokenProvider } from "../../../../repository/token/TokenProvider";
 import { RefreshTokenController } from "./refreshToken.controller";
+import { AuthTokenFacade } from "../../../../repository/token/AuthTokenFacade/AuthTokenFacade";
 
 export const handleRefreshToken = (
   req: FastifyRequest,
@@ -10,10 +11,11 @@ export const handleRefreshToken = (
 ) => {
   const refreshTokenProvider = new InMemoryRefreshToken();
   const tokenProvider = new TokenProvider();
-  const refreshTokenUseCase = new RefreshTokenUseCase(
-    refreshTokenProvider,
+  const authTokenFacade = new AuthTokenFacade(
     tokenProvider,
+    refreshTokenProvider,
   );
+  const refreshTokenUseCase = new RefreshTokenUseCase(authTokenFacade);
   const refreshTokenController = new RefreshTokenController(
     refreshTokenUseCase,
   );

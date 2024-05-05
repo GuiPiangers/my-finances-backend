@@ -21,6 +21,6 @@ export interface ILaunchRepository {
   create(data: CreateLaunch): Promise<void>;
   update(data: UpdateLaunch): Promise<void>;
   delete(data: DeleteLaunch): Promise<void>;
-  list(): Promise<Launch[]>;
+  list({ userId }: ListLaunch): Promise<Launch[]>;
   getById(data: GetByIdLaunch): Promise<Launch>;
 }

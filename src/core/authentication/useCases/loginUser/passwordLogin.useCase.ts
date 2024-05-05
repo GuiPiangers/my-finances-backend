@@ -1,9 +1,8 @@
-import { IRefreshTokenProvider } from "../../../../repository/token/IRefreshTokenProvider";
-import { ITokenProvider } from "../../../../repository/token/ITokenProvider";
 import { IUserRepository } from "../../../../repository/user/IUserRepository";
 import { Crypto } from "../../../shared/helpers/Crypto";
 import { ApiError } from "../../../../utils/ApiError";
 import { LoginUserTemplate } from "./loginUser.useCase";
+import { AuthTokenFacade } from "../../../../repository/token/AuthTokenFacade/AuthTokenFacade";
 
 type PasswordCredentials = {
   email: string;
@@ -13,10 +12,9 @@ type PasswordCredentials = {
 export class PasswordLoginUseCase extends LoginUserTemplate {
   constructor(
     private _userRepository: IUserRepository,
-    refreshTokenProvider: IRefreshTokenProvider,
-    tokenProvider: ITokenProvider,
+    authTokenFacade: AuthTokenFacade,
   ) {
-    super(refreshTokenProvider, tokenProvider);
+    super(authTokenFacade);
   }
 
   async validadeCredentials({ email, password }: PasswordCredentials) {

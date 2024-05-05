@@ -10,6 +10,6 @@ export async function launchRoutes(fastify: FastifyInstance) {
   fastify.post("/", authenticationPreHandler, handleCreateLaunch);
   fastify.delete("/", authenticationPreHandler, handleDeleteLaunch);
   fastify.get("/", authenticationPreHandler, handleListLaunches);
-  fastify.get("/:id/:userId", authenticationPreHandler, handleGetLaunch);
-  fastify.patch("/:id/:userId", authenticationPreHandler, handleUpdateLaunch);
+  fastify.get("/:id", authenticationPreHandler, handleGetLaunch);
+  fastify.patch("/:id", authenticationPreHandler, handleUpdateLaunch);
 }

@@ -4,7 +4,12 @@ import * as dotenv from "dotenv";
 import { ApiError } from "../../utils/ApiError";
 dotenv.config();
 
-const invalidTokens: string[] = [];
+type whiteListToken = {
+  validUser: string;
+  validToken: string;
+};
+
+let validTokens: whiteListToken[] = [];
 
 class TokenProvider implements ITokenProvider {
   async create(userId: string) {
@@ -12,23 +17,31 @@ class TokenProvider implements ITokenProvider {
       throw new ApiError("Erro de configuração do servidor", {
         statusCode: 500,
       });
-    const token = await jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    const token = await jwt.sign({ userId }, process.env.JWT_SECRET, {
       expiresIn: 60 * 10,
     });
+    validTokens.push({ validToken: token, validUser: userId });
     return token;
   }
 
   async verify(token: string): Promise<JwtPayload> {
-    const isInvalidToken = invalidTokens.find(
-      (invalidToken) => token === invalidToken,
+    const isValidToken = validTokens.find(
+      (validObject) => token === validObject.validToken,
     );
-    if (isInvalidToken)
-      throw new ApiError("Invalid token", { statusCode: 401 });
+    if (!isValidToken) throw new ApiError("Invalid token", { statusCode: 401 });
     return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
   }
 
   async invalidToken(token: string) {
-    await invalidTokens.push(token);
+    validTokens = await validTokens.filter(
+      (validToken) => validToken.validToken !== token,
+    );
+  }
+
+  async invalidUser(userId: string) {
+    validTokens = await validTokens.filter(
+      (validToken) => validToken.validUser !== userId,
+    );
   }
 }
 

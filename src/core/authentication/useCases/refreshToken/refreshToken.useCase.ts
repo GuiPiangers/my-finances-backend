@@ -1,15 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import dayjs from "dayjs";
-import { IRefreshTokenProvider } from "../../../../repository/token/IRefreshTokenProvider";
-import { ITokenProvider } from "../../../../repository/token/ITokenProvider";
-import { RefreshToken } from "../../models/RefreshToken";
 import { ApiError } from "../../../../utils/ApiError";
+import { AuthTokenFacade } from "../../../../repository/token/AuthTokenFacade/AuthTokenFacade";
 
 export class RefreshTokenUseCase {
-  constructor(
-    private refreshTokenProvider: IRefreshTokenProvider,
-    private tokenProvider: ITokenProvider,
-  ) {}
+  constructor(private authTokenFacade: AuthTokenFacade) {}
 
   async execute({
     refreshTokenId,
@@ -18,20 +12,14 @@ export class RefreshTokenUseCase {
     refreshTokenId: string;
     userId: string;
   }) {
-    const refreshToken = await this.refreshTokenProvider.get(refreshTokenId);
-    if (!refreshToken) {
-      this.refreshTokenProvider.delete(userId);
+    const isValidToken =
+      await this.authTokenFacade.refreshTokenProvider.get(refreshTokenId);
+    await this.authTokenFacade.tokenProvider.invalidUser(userId);
+    if (!isValidToken) {
+      // this.authTokenFacade.logout({ userId });
       throw new ApiError("Refresh Token inválido", { statusCode: 401 });
     }
-    const token = await this.tokenProvider.create(refreshToken.userId);
-
-    const { id: _, ...refreshTokenData } = refreshToken;
-    const { id, expiresIn } = new RefreshToken(refreshTokenData);
-    await this.refreshTokenProvider.create({
-      id,
-      expiresIn,
-      userId,
-    });
-    return { token, RefreshToken: { userId, id, expiresIn } };
+    const token = await this.authTokenFacade.tokenProvider.create(userId);
+    return { token };
   }
 }
