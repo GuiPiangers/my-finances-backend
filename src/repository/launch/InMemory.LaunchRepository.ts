@@ -11,32 +11,58 @@ import {
 let launchDataDB: LaunchDTO[] = [];
 
 export class InMemoryLaunchRepository implements ILaunchRepository {
+  private _dataBase: LaunchDTO[] | undefined;
+  constructor(dataBase?: LaunchDTO[]) {
+    this._dataBase = dataBase;
+  }
+
   async create(data: CreateLaunch) {
-    launchDataDB.push(data);
+    if (this._dataBase) this._dataBase.push(data);
+    else launchDataDB.push(data);
   }
 
   async update(data: UpdateLaunch) {
-    launchDataDB = launchDataDB.map((launch) => {
-      if (launch.id === data.id && launch.userId === data.userId)
-        return Object.assign(launch, data);
-      return launch as LaunchDTO;
-    });
+    const updateArray = (array: LaunchDTO[]) => {
+      return array.map((launch) => {
+        if (launch.id === data.id && launch.userId === data.userId)
+          return Object.assign(launch, data);
+        return launch as LaunchDTO;
+      });
+    };
+
+    if (this._dataBase) this._dataBase = updateArray(this._dataBase);
+    else launchDataDB = updateArray(launchDataDB);
   }
 
   async delete({ id, userId }: DeleteLaunch) {
-    launchDataDB = launchDataDB.filter((launch) => {
-      return userId === launch.id && launch.id !== id;
-    });
+    const deleteLaunch = (array: LaunchDTO[]) => {
+      return array.filter((launch) => {
+        return userId === launch.id && launch.id !== id;
+      });
+    };
+
+    if (this._dataBase) this._dataBase = deleteLaunch(this._dataBase);
+    else launchDataDB = deleteLaunch(launchDataDB);
   }
 
-  async list() {
-    return launchDataDB.map((launch) => new Launch(launch));
+  async list({ userId }: { userId: string }) {
+    if (this._dataBase)
+      return this._dataBase
+        .filter((launch) => launch.userId === userId)
+        .map((launch) => new Launch(launch));
+    return launchDataDB
+      .filter((launch) => launch.userId === userId)
+      .map((launch) => new Launch(launch));
   }
 
   async getById({ id, userId }: GetByIdLaunch) {
-    const launch = launchDataDB.find(
-      (launch) => launch.id === id && launch.userId === userId,
-    );
+    const find = (array: LaunchDTO[]) => {
+      return array.find(
+        (launch) => launch.id === id && launch.userId === userId,
+      );
+    };
+    const launch = this._dataBase ? find(this._dataBase) : find(launchDataDB);
+
     if (!launch)
       throw new ApiError("Lançamento não encontrado", { statusCode: 400 });
 
