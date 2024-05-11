@@ -9,14 +9,7 @@ export abstract class LoginUserTemplate {
 
   async execute(credentials: unknown) {
     const user = await this.validadeCredentials(credentials);
-    // const token = await this.tokenProvider.create(user.id);
-    // const refreshTokenObject = new RefreshToken({ userId: user.id });
 
-    // const refreshToken = await this.refreshTokenProvider.create({
-    //   expiresIn: refreshTokenObject.expiresIn,
-    //   userId: refreshTokenObject.userId,
-    //   id: refreshTokenObject.id,
-    // });
     const { token, refreshToken } = await this._authTokenFacade.create({
       userId: user.id,
     });

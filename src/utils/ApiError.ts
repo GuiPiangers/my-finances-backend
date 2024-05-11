@@ -1,6 +1,6 @@
 export class ApiError extends Error {
   public readonly statusCode: number;
-  public readonly type: string | undefined;
+  public readonly name: string;
 
   constructor(
     message: string,
@@ -8,6 +8,6 @@ export class ApiError extends Error {
   ) {
     super(message);
     this.statusCode = config?.statusCode || 400;
-    this.type = config?.title;
+    this.name = config?.title || "Error";
   }
 }

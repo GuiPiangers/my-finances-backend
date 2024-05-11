@@ -1,23 +1,17 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { responseError } from "../../../../utils/ResponseError";
 import { CreateLaunchUseCase } from "../../useCases/createLaunch.useCase";
 import { ApiError } from "../../../../utils/ApiError";
-import { LaunchDTO } from "../../models/Launch";
+import { CreateLaunchSchema } from "../../../../routes/launch/schemas/createLaunch.schema";
 
 export class CreateLaunchController {
   constructor(private _CreateLaunchUseCase: CreateLaunchUseCase) {}
 
   async handle(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { userId: _, ...data } = req.body as LaunchDTO;
-      const userId = req.user?.userId;
-      if (!userId) throw new ApiError("UserId is required");
+    const data = req.body as CreateLaunchSchema;
+    const userId = req.user?.userId;
+    if (!userId) throw new ApiError("UserId is required");
 
-      const res = await this._CreateLaunchUseCase.execute({ userId, ...data });
-      reply.send(res);
-    } catch (err) {
-      responseError(reply, err as ApiError);
-    }
+    const res = await this._CreateLaunchUseCase.execute({ userId, ...data });
+    reply.send(res);
   }
 }

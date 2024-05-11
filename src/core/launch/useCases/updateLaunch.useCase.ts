@@ -12,7 +12,6 @@ export class UpdateLaunchUseCase {
       userId: params.userId,
     });
     const updatedLaunch = launch.update(params);
-
     await this._LaunchRepository.update(updatedLaunch.getDTO());
   }
 }

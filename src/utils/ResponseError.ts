@@ -6,7 +6,7 @@ export const responseError = (response: FastifyReply, err: ApiError) => {
   return response.status(statusCode).send({
     message: err.message || "Unexpected error.",
     statusCode,
-    type: err.type,
+    type: err.name,
     error: true,
   });
 };

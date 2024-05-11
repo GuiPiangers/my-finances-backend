@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InMemoryLaunchRepository } from "../../../../repository/launch/InMemory.LaunchRepository";
 import { DateTime } from "../../../shared/Date";
 import { LaunchDTO } from "../../models/Launch";
 import { CreateLaunchUseCase } from "../createLaunch.useCase";
 
-describe("Create launch", () => {
+describe("Create launch use case", () => {
   let inMemoryLaunches = new InMemoryLaunchRepository();
   let createLaunchUseCase = new CreateLaunchUseCase(inMemoryLaunches);
 

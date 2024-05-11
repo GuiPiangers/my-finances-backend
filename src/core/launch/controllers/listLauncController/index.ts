@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { InMemoryLaunchRepository } from "../../../../repository/launch/InMemory.LaunchRepository";
+import { inMemoryLaunchRepository } from "../../../../repository/launch/InMemory.LaunchRepository";
 import { ListLaunchesUseCase } from "../../useCases/listLaunches.useCase";
 import { ListLaunchesController } from "./listLaunches.controller";
 
@@ -7,7 +7,6 @@ export const handleListLaunches = (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const inMemoryLaunchRepository = new InMemoryLaunchRepository();
   const listLaunchesUseCase = new ListLaunchesUseCase(inMemoryLaunchRepository);
   const listLaunchesController = new ListLaunchesController(
     listLaunchesUseCase,

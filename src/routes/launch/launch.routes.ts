@@ -1,0 +1,60 @@
+import { FastifyInstance } from "fastify";
+import { handleCreateLaunch } from "../../core/launch/controllers/createLaunchController";
+import { handleListLaunches } from "../../core/launch/controllers/listLauncController";
+import { handleGetLaunch } from "../../core/launch/controllers/getLaunchController";
+import { handleDeleteLaunch } from "../../core/launch/controllers/deleteLaunchController";
+import { handleUpdateLaunch } from "../../core/launch/controllers/updateLaunchController";
+import { authenticationPreHandler } from "../preHandler/authentication";
+import { createLaunchBodySchema } from "./schemas/createLaunch.schema";
+import { deleteLaunchBodySchema } from "./schemas/deleteLaunch.schema";
+import { getLaunchParamsSchema } from "./schemas/getLaunch.schema";
+import {
+  updateLaunchBodySchema,
+  updateLaunchParamsSchema,
+} from "./schemas/updateLaunch.schema";
+
+export async function launchRoutes(fastify: FastifyInstance) {
+  fastify.post(
+    "/",
+    {
+      preHandler: authenticationPreHandler,
+      schema: { body: createLaunchBodySchema },
+    },
+    handleCreateLaunch,
+  );
+  fastify.delete(
+    "/",
+    {
+      preHandler: authenticationPreHandler,
+      schema: { body: deleteLaunchBodySchema },
+    },
+    handleDeleteLaunch,
+  );
+  fastify.get(
+    "/",
+    {
+      preHandler: authenticationPreHandler,
+    },
+    handleListLaunches,
+  );
+  fastify.get(
+    "/:id",
+    {
+      preHandler: authenticationPreHandler,
+      schema: { params: getLaunchParamsSchema },
+    },
+
+    handleGetLaunch,
+  );
+  fastify.patch(
+    "/:id",
+    {
+      preHandler: authenticationPreHandler,
+      schema: {
+        params: updateLaunchParamsSchema,
+        body: updateLaunchBodySchema,
+      },
+    },
+    handleUpdateLaunch,
+  );
+}

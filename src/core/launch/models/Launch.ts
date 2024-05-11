@@ -61,7 +61,6 @@ export class Launch extends Entity {
   update(data: Partial<LaunchDTO>) {
     const { id, userId, ...launchData } = data;
     const launchDTO = this.getDTO();
-    Object.assign(launchDTO, launchData);
-    return new Launch(launchDTO);
+    return new Launch({ ...launchDTO, ...launchData });
   }
 }
