@@ -32,7 +32,7 @@ app.setErrorHandler(function (error, request, reply) {
   } else {
     const statusCode = error.statusCode ?? 500;
 
-    console.log(error.name);
+    console.log(error.message);
 
     reply.status(statusCode).send({
       message: error.message || "Unexpected error.",

@@ -11,7 +11,7 @@ export class CreateLaunchController {
     const userId = req.user?.userId;
     if (!userId) throw new ApiError("UserId is required");
 
-    const res = await this._CreateLaunchUseCase.execute({ userId, ...data });
-    reply.send(res);
+    await this._CreateLaunchUseCase.execute({ userId, ...data });
+    reply.send({ message: "Criado com sucesso!" });
   }
 }

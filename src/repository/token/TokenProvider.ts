@@ -28,8 +28,13 @@ class TokenProvider implements ITokenProvider {
     const isValidToken = validTokens.find(
       (validObject) => token === validObject.validToken,
     );
-    if (!isValidToken) throw new ApiError("Invalid token", { statusCode: 401 });
-    return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
+    // if (!isValidToken) throw new ApiError("Invalid token", { statusCode: 401 });
+    console.log("chegou aqui");
+    try {
+      return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
+    } catch (error) {
+      throw new ApiError("Falha de identificação", { statusCode: 401 });
+    }
   }
 
   async invalidToken(token: string) {

@@ -9,6 +9,6 @@ export class ListLaunchesController {
     const userId = req.user?.userId;
     if (!userId) throw new ApiError("UserId is required");
     const res = await this._ListLaunchUseCase.execute({ userId });
-    reply.send(res);
+    reply.send(res || { message: "no result" });
   }
 }
