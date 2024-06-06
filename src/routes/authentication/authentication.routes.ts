@@ -13,7 +13,11 @@ export async function authenticationRoutes(fastify: FastifyInstance) {
     { schema: { body: googleLoginBodySchema } },
     handleGoogleLogin,
   );
-  fastify.post("/logout", handleLogout);
+  fastify.get(
+    "/logout",
+    { preHandler: authenticationPreHandler },
+    handleLogout,
+  );
   fastify.post(
     "/refreshToken",
     { schema: { body: refreshTokenBodySchema } },

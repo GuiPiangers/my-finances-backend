@@ -14,7 +14,7 @@ export class RefreshTokenUseCase {
   }) {
     const isValidToken =
       await this.authTokenFacade.refreshTokenProvider.get(refreshTokenId);
-    await this.authTokenFacade.tokenProvider.invalidUser(userId);
+
     if (!isValidToken) {
       // this.authTokenFacade.logout({ userId });
       throw new ApiError("Refresh Token inválido", { statusCode: 401 });

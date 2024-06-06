@@ -25,10 +25,13 @@ class TokenProvider implements ITokenProvider {
   }
 
   async verify(token: string): Promise<JwtPayload> {
-    // const isValidToken = validTokens.find(
-    //   (validObject) => token === validObject.validToken,
-    // );
-    // if (!isValidToken) throw new ApiError("Invalid token", { statusCode: 401 });
+    const isValidToken = validTokens.find(
+      (validObject) => token === validObject.validToken,
+    );
+    if (!isValidToken)
+      throw new ApiError("Invalid token, usuário deslogado", {
+        statusCode: 401,
+      });
     try {
       return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
     } catch (error) {
