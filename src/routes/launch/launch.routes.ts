@@ -6,7 +6,7 @@ import { handleDeleteLaunch } from "../../core/launch/controllers/deleteLaunchCo
 import { handleUpdateLaunch } from "../../core/launch/controllers/updateLaunchController";
 import { authenticationPreHandler } from "../preHandler/authentication";
 import { createLaunchBodySchema } from "./schemas/createLaunch.schema";
-import { deleteLaunchBodySchema } from "./schemas/deleteLaunch.schema";
+import { deleteLaunchParamsSchema } from "./schemas/deleteLaunch.schema";
 import { getLaunchParamsSchema } from "./schemas/getLaunch.schema";
 import {
   updateLaunchBodySchema,
@@ -23,10 +23,10 @@ export async function launchRoutes(fastify: FastifyInstance) {
     handleCreateLaunch,
   );
   fastify.delete(
-    "/",
+    "/:id",
     {
       preHandler: authenticationPreHandler,
-      schema: { body: deleteLaunchBodySchema },
+      schema: { params: deleteLaunchParamsSchema },
     },
     handleDeleteLaunch,
   );

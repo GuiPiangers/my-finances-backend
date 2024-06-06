@@ -19,7 +19,6 @@ export class RefreshTokenUseCase {
       // this.authTokenFacade.logout({ userId });
       throw new ApiError("Refresh Token inválido", { statusCode: 401 });
     }
-    console.log(userId);
     const token = await this.authTokenFacade.tokenProvider.create(userId);
     return { token };
   }

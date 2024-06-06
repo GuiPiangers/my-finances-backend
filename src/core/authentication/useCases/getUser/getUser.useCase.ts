@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../../repository/user/IUserRepository";
 import { ApiError } from "../../../../utils/ApiError";
 
-export class GetUserProfileUseCase {
+export class GetUserUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute(id: string) {

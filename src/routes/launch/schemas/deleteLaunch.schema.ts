@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const deleteLaunchBodySchema = z.object({
+export const deleteLaunchParamsSchema = z.object({
   id: z.string(),
 });
 
-export type DeleteLaunchSchema = z.infer<typeof deleteLaunchBodySchema>;
+export type DeleteLaunchSchema = z.infer<typeof deleteLaunchParamsSchema>;

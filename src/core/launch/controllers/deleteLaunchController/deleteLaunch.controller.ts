@@ -7,10 +7,10 @@ export class DeleteLaunchController {
   constructor(private _deleteLaunchesUseCase: DeleteLaunchUseCase) {}
 
   async handle(req: FastifyRequest, reply: FastifyReply) {
-    const { id } = req.body as DeleteLaunchSchema;
+    const { id } = req.params as DeleteLaunchSchema;
     const userId = req.user?.userId;
     if (!userId) throw new ApiError("UserId is required");
-    const res = await this._deleteLaunchesUseCase.execute({ id, userId });
-    reply.send(res);
+    await this._deleteLaunchesUseCase.execute({ id, userId });
+    reply.send({ message: "Deletado com sucesso" });
   }
 }

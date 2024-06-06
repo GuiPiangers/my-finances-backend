@@ -14,7 +14,7 @@ class InMemoryRefreshToken implements IRefreshTokenProvider {
     this.delete(refreshToken.userId);
     refreshTokens.push(refreshToken);
     return await jwt.sign(
-      { userId: refreshToken.userId, id: refreshToken.id },
+      { userId: refreshToken.userId, refreshTokenId: refreshToken.id },
       process.env.JWT_SECRET!,
       {
         expiresIn: refreshToken.expiresIn,

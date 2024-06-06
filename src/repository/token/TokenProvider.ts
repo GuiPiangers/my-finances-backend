@@ -1,5 +1,5 @@
 import { ITokenProvider, JwtPayload } from "./ITokenProvider";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { ApiError } from "../../utils/ApiError";
 dotenv.config();
@@ -18,22 +18,26 @@ class TokenProvider implements ITokenProvider {
         statusCode: 500,
       });
     const token = await jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 10,
+      expiresIn: 60 * 30,
     });
     validTokens.push({ validToken: token, validUser: userId });
     return token;
   }
 
   async verify(token: string): Promise<JwtPayload> {
-    const isValidToken = validTokens.find(
-      (validObject) => token === validObject.validToken,
-    );
+    // const isValidToken = validTokens.find(
+    //   (validObject) => token === validObject.validToken,
+    // );
     // if (!isValidToken) throw new ApiError("Invalid token", { statusCode: 401 });
-    console.log("chegou aqui");
     try {
       return (await jwt.verify(token, process.env.JWT_SECRET!)) as JwtPayload;
     } catch (error) {
-      throw new ApiError("Falha de identificação", { statusCode: 401 });
+      throw new ApiError(
+        (error as JsonWebTokenError).message || "falha de identificação",
+        {
+          statusCode: 401,
+        },
+      );
     }
   }
 

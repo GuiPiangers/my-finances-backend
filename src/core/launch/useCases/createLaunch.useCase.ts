@@ -9,7 +9,6 @@ export class CreateLaunchUseCase {
 
   async execute(params: CreateLaunch) {
     const launch = new Launch(params);
-
     await this._LaunchRepository.create(launch.getDTO());
   }
 }

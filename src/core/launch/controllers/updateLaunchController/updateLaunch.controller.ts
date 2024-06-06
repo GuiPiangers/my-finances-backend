@@ -13,11 +13,12 @@ export class UpdateLaunchController {
     const userId = req.user?.userId;
     if (!userId) throw new ApiError("UserId is required");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const res = await this._updateLaunchUseCase.execute({
       ...data,
       id,
       userId,
     });
-    reply.send(res);
+    reply.send({ message: "atualizado com sucesso!" });
   }
 }

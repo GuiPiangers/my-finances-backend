@@ -25,6 +25,7 @@ app.withTypeProvider<ZodTypeProvider>();
 
 app.register(launchRoutes, { prefix: "launch" });
 app.register(authenticationRoutes);
+
 app.setErrorHandler(function (error, request, reply) {
   if (error.code === "FST_ERR_VALIDATION") {
     const jsonMessage = JSON.parse(error.message);
@@ -43,10 +44,6 @@ app.setErrorHandler(function (error, request, reply) {
 });
 
 const PORT = 3333;
-
-app.get("/", (res, reply) => {
-  reply.send("ok");
-});
 
 app.listen(
   {
