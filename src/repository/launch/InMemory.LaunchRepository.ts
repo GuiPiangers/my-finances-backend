@@ -2,10 +2,11 @@ import { Launch, LaunchDTO } from "../../core/launch/models/Launch";
 import { ApiError } from "../../utils/ApiError";
 import {
   CreateLaunch,
-  GetByIdLaunch,
+  GetLaunchById,
   ILaunchRepository,
   UpdateLaunch,
   DeleteLaunch,
+  ListLaunch,
 } from "./ILaunchRepository";
 
 export class InMemoryLaunchRepository implements ILaunchRepository {
@@ -32,13 +33,22 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
     });
   }
 
-  async list({ userId }: { userId: string }) {
+  async listByMonthAndYear({ userId, month, year }: ListLaunch) {
     return this._dataBase
-      .filter((launch) => launch.userId === userId)
+      .filter((launchDTO) => {
+        const launchData = new Launch(launchDTO);
+        const launchMonth = launchData.date.value.getMonth();
+        const launchYear = launchData.date.value.getFullYear();
+        return (
+          launchData.userId === userId &&
+          launchMonth === month &&
+          launchYear === year
+        );
+      })
       .map((launch) => new Launch(launch));
   }
 
-  async getById({ id, userId }: GetByIdLaunch) {
+  async getById({ id, userId }: GetLaunchById) {
     const launch = this._dataBase.find(
       (launch) => launch.id === id && launch.userId === userId,
     );

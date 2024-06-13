@@ -7,7 +7,7 @@ describe("Delete launch use case", () => {
   const launch: LaunchDTO = {
     userId: "1234",
     id: "123",
-    date: "12/04/2024",
+    date: "12/01/2024",
     description: "Valor a pagar",
     type: "expenditure",
     status: "payable",
@@ -26,7 +26,11 @@ describe("Delete launch use case", () => {
     const { id, userId } = launch;
     await deleteLaunchUseCase.execute({ id: id!, userId });
 
-    const launchDb = await inMemoryLaunches.list({ userId });
+    const launchDb = await inMemoryLaunches.listByMonthAndYear({
+      userId,
+      month: 0,
+      year: 2024,
+    });
     expect(launchDb).toEqual([]);
   });
 });

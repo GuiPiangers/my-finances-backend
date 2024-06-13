@@ -12,6 +12,7 @@ import {
   updateLaunchBodySchema,
   updateLaunchParamsSchema,
 } from "./schemas/updateLaunch.schema";
+import { listLaunchQuerySchema } from "./schemas/listLaunch.schema";
 
 export async function launchRoutes(fastify: FastifyInstance) {
   fastify.post(
@@ -34,6 +35,9 @@ export async function launchRoutes(fastify: FastifyInstance) {
     "/",
     {
       preHandler: authenticationPreHandler,
+      schema: {
+        querystring: listLaunchQuerySchema,
+      },
     },
     handleListLaunches,
   );

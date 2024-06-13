@@ -9,18 +9,20 @@ export type DeleteLaunch = {
   id: string;
   userId: string;
 };
-export type GetByIdLaunch = {
+export type GetLaunchById = {
   id: string;
   userId: string;
 };
 export type ListLaunch = {
   userId: string;
+  month: number;
+  year: number;
 };
 
 export interface ILaunchRepository {
   create(data: CreateLaunch): Promise<void>;
   update(data: UpdateLaunch): Promise<void>;
   delete(data: DeleteLaunch): Promise<void>;
-  list({ userId }: ListLaunch): Promise<Launch[]>;
-  getById(data: GetByIdLaunch): Promise<Launch>;
+  listByMonthAndYear({ userId, month, year }: ListLaunch): Promise<Launch[]>;
+  getById(data: GetLaunchById): Promise<Launch>;
 }

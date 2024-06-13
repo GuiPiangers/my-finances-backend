@@ -9,7 +9,7 @@ describe("List launches use case", () => {
 
   const launch = new Launch({
     userId: userId.value,
-    date: "2024-04-12",
+    date: "2024-01-12",
     description: "Vale transporte",
     type: "revenue",
     status: "payed",
@@ -18,7 +18,7 @@ describe("List launches use case", () => {
   }).getDTO();
   const launch2 = new Launch({
     userId: userId.value,
-    date: "2024-04-12",
+    date: "2024-01-12",
     description: "Salário",
     type: "revenue",
     status: "payed",
@@ -38,6 +38,8 @@ describe("List launches use case", () => {
   it("should be able to list all launches of a user", async () => {
     const listLaunches = await listLaunchesUseCase.execute({
       userId: userId.value,
+      month: 0,
+      year: 2024,
     });
 
     expect(listLaunches).toEqual(db);
@@ -48,7 +50,7 @@ describe("List launches use case", () => {
 
     const launch3 = new Launch({
       userId: userId2.value,
-      date: "2024-04-12",
+      date: "2024-01-12",
       description: "Vale transporte",
       type: "revenue",
       status: "payable",
@@ -58,7 +60,7 @@ describe("List launches use case", () => {
 
     const launch4 = new Launch({
       userId: userId2.value,
-      date: "2024-04-12",
+      date: "2024-01-12",
       description: "Salário",
       type: "revenue",
       status: "payed",
@@ -71,6 +73,41 @@ describe("List launches use case", () => {
 
     const listLaunches = await listLaunchesUseCase.execute({
       userId: userId2.value,
+      month: 0,
+      year: 2024,
+    });
+
+    expect(listLaunches).not.toEqual(db);
+    expect(listLaunches).toEqual([launch3, launch4]);
+  });
+  it("should show only launches that the month and year are equal to selected values", async () => {
+    const launch3 = new Launch({
+      userId: userId.value,
+      date: "2024-02-12",
+      description: "Conta de luz",
+      type: "revenue",
+      status: "payable",
+      value: 150,
+      category: "Vale",
+    }).getDTO();
+
+    const launch4 = new Launch({
+      userId: userId.value,
+      date: "2024-02-12",
+      description: "Salário",
+      type: "revenue",
+      status: "payed",
+      value: 2000,
+      category: "Salário",
+    }).getDTO();
+
+    await inMemoryLaunches.create(launch3);
+    await inMemoryLaunches.create(launch4);
+
+    const listLaunches = await listLaunchesUseCase.execute({
+      userId: userId.value,
+      month: 1,
+      year: 2024,
     });
 
     expect(listLaunches).not.toEqual(db);

@@ -6,8 +6,12 @@ import {
 export class ListLaunchesUseCase {
   constructor(private _LaunchRepository: ILaunchRepository) {}
 
-  async execute({ userId }: ListLaunch) {
-    const launches = await this._LaunchRepository.list({ userId });
+  async execute({ userId, month, year }: ListLaunch) {
+    const launches = await this._LaunchRepository.listByMonthAndYear({
+      userId,
+      month,
+      year,
+    });
 
     return launches.map((launch) => launch.getDTO());
   }

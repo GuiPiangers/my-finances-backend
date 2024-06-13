@@ -15,7 +15,7 @@ describe("Create launch use case", () => {
 
   it("should be able to create a launch", async () => {
     const launchData = {
-      date: "24/10/2024",
+      date: "24/01/2024",
       description: "Salário da empresa",
       status: "payed",
       type: "revenue",
@@ -26,13 +26,15 @@ describe("Create launch use case", () => {
 
     await createLaunchUseCase.execute(launchData);
 
-    const [newLaunch] = await inMemoryLaunches.list({
+    const [newLaunch] = await inMemoryLaunches.listByMonthAndYear({
       userId: launchData.userId,
+      month: 0,
+      year: 2024,
     });
 
     expect(newLaunch).toHaveProperty("id");
     expect(newLaunch.date).toBeInstanceOf(DateTime);
-    expect(newLaunch.date.ISODate).toBe("2024-10-24");
+    expect(newLaunch.date.ISODate).toBe("2024-01-24");
     expect(newLaunch.description).toBe(launchData.description);
     expect(newLaunch.status).toBe(launchData.status);
     expect(newLaunch.type).toBe(launchData.type);
