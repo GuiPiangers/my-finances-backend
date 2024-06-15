@@ -1,4 +1,5 @@
 import { Launch, LaunchDTO } from "../../core/launch/models/Launch";
+import { DateTime } from "../../core/shared/Date";
 import { ApiError } from "../../utils/ApiError";
 import {
   CreateLaunch,
@@ -36,11 +37,13 @@ export class InMemoryLaunchRepository implements ILaunchRepository {
   async listByMonthAndYear({ userId, month, year }: ListLaunch) {
     return this._dataBase
       .filter((launchDTO) => {
-        const launchData = new Launch(launchDTO);
-        const launchMonth = launchData.date.value.getMonth();
-        const launchYear = launchData.date.value.getFullYear();
+        const launchDate = new DateTime(launchDTO.date);
+
+        const launchMonth = launchDate.value.getMonth();
+        const launchYear = launchDate.value.getFullYear();
+
         return (
-          launchData.userId === userId &&
+          launchDTO.userId === userId &&
           launchMonth === month &&
           launchYear === year
         );

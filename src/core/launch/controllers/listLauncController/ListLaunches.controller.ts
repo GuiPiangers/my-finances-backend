@@ -9,7 +9,6 @@ export class ListLaunchesController {
   async handle(req: FastifyRequest, reply: FastifyReply) {
     const userId = req.user?.userId;
     const queryParams = req.query as ListLaunchQuerySchema;
-    console.log(queryParams);
 
     const month = queryParams.month
       ? +queryParams.month!
@@ -19,11 +18,10 @@ export class ListLaunchesController {
       ? +queryParams.year!
       : new Date().getFullYear();
 
-    console.log(month, year);
-
     if (!userId) throw new ApiError("UserId is required");
     const res = await this._ListLaunchUseCase.execute({ userId, month, year });
     console.log(res);
+
     reply.send(res || { message: "no result" });
   }
 }

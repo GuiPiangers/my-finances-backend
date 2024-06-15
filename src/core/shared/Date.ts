@@ -35,7 +35,7 @@ export class DateTime {
         );
     }
 
-    this.value = new Date(valueDate);
+    this.value = new Date(`${valueDate}T12:00`);
   }
 
   private _isLocaleDate(value: string) {
